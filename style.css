@@ -1,0 +1,159 @@
+:root{
+  --bg:            #0a0908;
+  --blood:         #7a1f1f;
+  --moonlight:     #9fb4b0;
+  --candle:        #c9a227;
+  --fog:           #d8d3c9;
+  --shadow-purple: #241f2e;
+}
+
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
+
+html,body{
+  margin:0; padding:0; width:100%; height:100%;
+  background:#000; overflow:hidden;
+  font-family:'Crimson Text', serif;
+  color:var(--fog);
+}
+
+#game-root{
+  position:relative; width:100vw; height:100vh;
+  height:100dvh;
+  overflow:hidden;
+  background:var(--bg);
+}
+
+.screen{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition:opacity .8s ease;
+}
+.screen.hidden{ opacity:0; pointer-events:none; }
+
+/* ---------- Title ---------- */
+#title-screen{ background:radial-gradient(ellipse at 50% 40%, #16130f 0%, #050403 75%); text-align:center; padding:0 8vw; }
+
+.title-main{
+  font-family:'Special Elite', monospace;
+  font-size:9.5vw;
+  line-height:1.15;
+  letter-spacing:1px;
+  color:var(--fog);
+  text-shadow:0 0 18px rgba(122,31,31,.35), 0 0 2px #000;
+  margin:0 0 .6em 0;
+  animation:flicker 6s infinite;
+}
+.title-sub{
+  font-style:italic; color:var(--moonlight); opacity:.75;
+  font-size:4vw; margin:0 0 3em 0; letter-spacing:2px;
+}
+.title-hint{ position:absolute; bottom:6vh; font-size:3vw; opacity:.35; }
+
+.btn-ghost{
+  background:transparent; border:1px solid rgba(216,211,201,.4);
+  color:var(--fog); font-family:'Crimson Text', serif; font-style:italic;
+  font-size:4vw; padding:.9em 1.8em; letter-spacing:1px;
+  border-radius:2px; cursor:pointer;
+}
+.btn-ghost:active{ background:rgba(216,211,201,.08); }
+
+@keyframes flicker{
+  0%,100%{ opacity:1; }
+  92%{ opacity:1; }
+  93%{ opacity:.4; }
+  94%{ opacity:.9; }
+  95%{ opacity:.3; }
+  96%{ opacity:1; }
+}
+
+/* ---------- Game screen ---------- */
+#game-screen{ background:#000; }
+#scene-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; }
+
+#vignette{
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.92) 100%);
+  animation:vig-breathe 7s ease-in-out infinite;
+}
+@keyframes vig-breathe{
+  0%,100%{ opacity:1; } 50%{ opacity:.85; }
+}
+
+.grain{
+  position:absolute; inset:0; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+#hud{
+  position:absolute; top:max(14px, env(safe-area-inset-top)); left:16px; right:16px;
+  display:flex; justify-content:space-between; pointer-events:none;
+}
+#scene-label{ font-style:italic; font-size:3.4vw; color:var(--moonlight); opacity:.6; letter-spacing:1px; }
+
+#interact-prompt{
+  position:absolute; left:50%; bottom:16vh; transform:translateX(-50%);
+  font-size:3.4vw; color:var(--candle); opacity:.9; letter-spacing:1px;
+  padding:.4em .9em; border:1px solid rgba(201,162,39,.4); border-radius:2px;
+  background:rgba(0,0,0,.35);
+  animation:pulse 1.6s ease-in-out infinite;
+}
+#interact-prompt.hidden{ display:none; }
+@keyframes pulse{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+/* ---------- Dialogue box ---------- */
+#dialogue-box{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:20px 22px calc(20px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg, rgba(10,9,8,0) 0%, rgba(6,5,4,.94) 22%, rgba(4,4,3,.98) 100%);
+  min-height:22vh;
+  transform:translateY(0); transition:transform .35s ease;
+}
+#dialogue-box.hidden{ transform:translateY(100%); pointer-events:none; }
+
+#dialogue-name{
+  font-family:'Special Elite', monospace; font-size:3.6vw; color:var(--blood);
+  letter-spacing:1px; margin-bottom:.5em; text-transform:lowercase;
+}
+#dialogue-text{
+  font-size:4.6vw; line-height:1.5; color:var(--fog); min-height:3.2em;
+}
+#dialogue-next{
+  text-align:right; color:var(--moonlight); opacity:.6; margin-top:.4em;
+  animation:bob 1.4s ease-in-out infinite;
+}
+@keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(4px);} }
+
+/* ---------- Jumpscare ---------- */
+#jumpscare-canvas{
+  position:absolute; inset:0; width:100%; height:100%; z-index:50; background:#000;
+}
+#jumpscare-canvas.hidden{ display:none; }
+.shake{ animation:shake .5s linear; }
+@keyframes shake{
+  0%,100%{ transform:translate(0,0); }
+  10%{ transform:translate(-8px,4px); }
+  20%{ transform:translate(7px,-5px); }
+  30%{ transform:translate(-6px,-6px); }
+  40%{ transform:translate(8px,3px); }
+  50%{ transform:translate(-4px,6px); }
+  60%{ transform:translate(6px,-3px); }
+  70%{ transform:translate(-7px,2px); }
+  80%{ transform:translate(5px,5px); }
+  90%{ transform:translate(-3px,-4px); }
+}
+
+/* ---------- End screen ---------- */
+#end-screen{ background:#000; text-align:center; }
+.end-title{ font-family:'Special Elite', monospace; font-size:7vw; color:var(--fog); letter-spacing:1px; }
+.end-sub{ color:var(--moonlight); font-style:italic; opacity:.7; margin-bottom:2em; }
+
+@media (min-width:700px){
+  .title-main{ font-size:56px; }
+  .title-sub{ font-size:20px; }
+  .btn-ghost{ font-size:18px; }
+  #scene-label{ font-size:14px; }
+  #interact-prompt{ font-size:15px; }
+  #dialogue-name{ font-size:15px; }
+  #dialogue-text{ font-size:19px; }
+  .end-title{ font-size:34px; }
+}
