@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0908" />
+<title>Rumah yang Ditinggalkan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="game-root">
+
+    <!-- TITLE SCREEN -->
+    <div id="title-screen" class="screen">
+      <div class="grain"></div>
+      <h1 class="title-main">RUMAH<br/>YANG DITINGGALKAN</h1>
+      <p class="title-sub">bab satu &mdash; kepulangan</p>
+      <button id="btn-start" class="btn-ghost">ketuk untuk mulai</button>
+      <p class="title-hint">headphone disarankan</p>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen hidden">
+      <canvas id="scene-canvas"></canvas>
+      <div id="vignette"></div>
+      <div class="grain"></div>
+
+      <div id="interact-prompt" class="hidden">ketuk untuk berinteraksi</div>
+
+      <div id="hud">
+        <span id="scene-label"></span>
+      </div>
+
+      <!-- Dialogue box -->
+      <div id="dialogue-box" class="hidden">
+        <div id="dialogue-name"></div>
+        <div id="dialogue-text"></div>
+        <div id="dialogue-next">▾</div>
+      </div>
+
+      <!-- Jumpscare overlay -->
+      <canvas id="jumpscare-canvas" class="hidden"></canvas>
+    </div>
+
+    <!-- END SCREEN -->
+    <div id="end-screen" class="screen hidden">
+      <div class="grain"></div>
+      <h2 class="end-title">bersambung...</h2>
+      <p class="end-sub">bab dua akan datang</p>
+      <button id="btn-restart" class="btn-ghost">mulai ulang</button>
+    </div>
+
+  </div>
+
+<script src="story.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
